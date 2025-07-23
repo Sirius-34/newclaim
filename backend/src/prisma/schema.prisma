@@ -1,0 +1,52 @@
+generator client {
+	provider				= "prisma-client-js"
+//	output					= "../lib/@prisma/client"				Temporarily unused, not required on prisma version before 6.9.0
+	previewFeatures 		= ["fullTextSearchPostgres"]
+}
+
+datasource db {
+	provider				= "postgresql"
+	url						= env("DATABASE_URL")
+}
+
+model User {
+	id						String				@id @default(uuid())
+	nick					String				@unique												// Login, shortname
+	email					String				@unique
+	name					String				@default("")										// FIO, fullname
+	avatar					String?																	// Optional, link to the user's avatar. It is planned to be used later, maybe changed for saving in database as blob
+	password				String
+	createdAt				DateTime			@default(now())
+	claim					Claim[]																	// Link to the 'Claim' (maintable)
+	permissions				UserPermission[]														// User permissions (roles) from ENUM. Default (on start of dev-period) all users need to be assigned 'ALL' permission
+	userGroupID				String?																	// Link to the 'sprUserGroup' table. Temporarily only for info. It is planned to be used later to determine user rights
+	userGroup				sprUserGroup?		@relation(fields: [userGroupID], references: [id])
+	cAct					Boolean				@default(true)										// mark account as Active / non-Active 
+}
+
+model Claim {
+	id						String				@id @default(uuid())
+	serialNumber			Int					@unique @default(autoincrement())
+	description				String                                                                  // Short description
+	text					String              @db.Text                                            // Full description. Maybe later need to increase the length of the field or change the type of field to Memo. 
+	createdAt				DateTime			@default(now())
+	documents				String[]                                                                // Optional, links to the claims docs. It is planned to be used later, maybe changed for saving in database as blob
+	authorId				String
+	author					User				@relation(fields: [authorId], references: [id])		// Link to the 'User' table
+    updatedAt               DateTime            @updatedAt
+	blockedAt				DateTime?
+    @@index([authorId])
+}
+
+model sprUserGroup {
+	id						String				@id @default(uuid())
+	npp						Int					@unique @default(autoincrement())
+	cUserGroupName			String
+	users					User[]																	// Link to the 'User' table
+}
+
+enum UserPermission {
+	EDITOR
+	BLOCK_CLAIMS
+	ALL
+}
