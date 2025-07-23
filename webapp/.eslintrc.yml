@@ -1,0 +1,28 @@
+extends:
+  - react-app
+  - ../.eslintrc.yml
+parserOptions:
+  project: ['./tsconfig.json', './tsconfig.app.json']
+overrides:
+  - files:
+      - vite.config.ts
+    parserOptions:
+      project: ./tsconfig.node.json
+rules:
+  no-console:
+    - error
+    - allow:
+        - info
+        - error
+        - warn
+  '@typescript-eslint/no-restricted-imports':
+    - error
+    - patterns:
+        - group:
+            - '@newclaim/backend/**'
+            - '!@newclaim/backend/**/'
+            - '!@newclaim/backend/**/input'
+            - '!@newclaim/backend/src/utils/can'
+            - '!@newclaim/backend/src/lib/@prisma/**'
+          allowTypeImports: true
+          message: 'Only types and input schemas are allowed to be imported from backend workspace'
