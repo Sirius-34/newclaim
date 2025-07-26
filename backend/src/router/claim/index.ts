@@ -26,4 +26,22 @@ export const claimRouter = router({
       },
     })
   }),
+
+  createClaim: publicProcedure
+    .input(z.object({
+      description: z.string().min(1).max(200),
+      text: z.string().min(1),
+    }))
+    .mutation(async ({ input }) => {
+      const { description, text } = input
+
+      return await prisma.claim.create({
+        data: {
+          description,
+          text,
+          authorId: 'fc3f3795-c82c-49aa-a257-ffd902d1e7a0', // временное решение
+        },
+      })
+    }),
+
 })
