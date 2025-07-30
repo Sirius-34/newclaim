@@ -1,50 +1,32 @@
 // webapp/src/claims/ClaimEdit.tsx
 
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 
-import { useEffect, useState } from 'react'
+import { type ClaimFormData } from '@newclaim/shared/src/schemas/claim'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { LinkButton } from '../components/Button'
 import { getClaimDetailsRoute, getClaimListRoute } from '../lib/routes'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
+import { ClaimEditForm } from './ClaimEditForm'
 import css from './index.module.scss'
 
-  export const ClaimEdit = () => {
+export const ClaimEdit = () => {
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const params = useParams<{ id?: string }>()
-  const id = params.id ?? ''
+  const location = useLocation()
+  const from = (location.state as { from?: string })?.from ?? getClaimListRoute()
+
+  const utils = trpc.useUtils()
+  const updateClaim = trpc.claim.updateClaim.useMutation()
 
   const {
     data: claim,
     isLoading,
     error,
-  } = trpc.claim.getClaimById.useQuery(id, {
+  } = trpc.claim.getClaimById.useQuery(id ?? '', {
     enabled: !!id,
   })
-
-  const updateClaim = trpc.claim.updateClaim.useMutation()
-
-  const [description, setDescription] = useState('')
-  const [text, setText] = useState('')
-
-  useEffect(() => {
-    if (claim) {
-      setDescription(claim.description ?? '')
-      setText(claim.text ?? '')
-    }
-  }, [claim])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      await updateClaim.mutateAsync({ id, description, text })
-      void navigate(getClaimListRoute())
-    } catch (err) {
-      alert('Ошибка при редактировании записи')
-    }
-  }
 
   if (!id) {
     return <div>Некорректный ID</div>
@@ -59,38 +41,47 @@ import css from './index.module.scss'
     return <div>Запись не найдена</div>
   }
 
-  const from = (useLocation().state as { from?: string })?.from
   const fallback = getClaimDetailsRoute({ id })
 
+  const handleSubmit = async (values: ClaimFormData) => {
+    console.info(values)
+    try {
+      await updateClaim.mutateAsync({
+        id,
+        description: values.description,
+        text: values.text,
+        numberField: values.numberField,
+        datetimeField: values.datetimeField ? new Date(values.datetimeField).toISOString() : undefined,
+      })
+
+      void utils.claim.getClaimById.invalidate(id)
+      void navigate(from)
+    } catch (err) {
+      alert('Ошибка при обновлении записи')
+    }
+  }
+
   return (
-    <>
-      {useTitle(`Редактирование дела #${claim.serialNumber}`)}
-      <form onSubmit={handleSubmit}>
-        <h2>Редактирование дела</h2>
-        <textarea
-          value={description}
-          onChange={(e) => {
-            setDescription(e.target.value)
-          }}
-          placeholder="Краткое описание"
-          required
-        />
-        <textarea
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value)
-          }}
-          placeholder="Полное описание"
-          required
-        />
-        <button type="submit">Сохранить</button>
-      </form>
+    <div style={{ padding: '1rem' }}>
+      {useTitle(`Редактирование #${claim.serialNumber}`)}
+      <h2>Редактирование дела</h2>
+      <ClaimEditForm
+        initialValues={{
+          description: claim.description,
+          text: claim.text,
+          numberField: claim.numberField ?? undefined,
+          datetimeField: claim.datetimeField ? new Date(claim.datetimeField).toISOString().slice(0, 16) : '',
+        }}
+        onSubmit={handleSubmit}
+      />
       <div className={css.backButton}>
-        <LinkButton color="red" to={from ?? fallback}>Back to Claim</LinkButton>
+        <LinkButton color="red" to={from ?? fallback}>
+          Back to Claim
+        </LinkButton>
       </div>
       <div className={css.backButton}>
         <LinkButton to={getClaimListRoute()}>Go to ClaimList</LinkButton>
       </div>
-    </>
+    </div>
   )
 }

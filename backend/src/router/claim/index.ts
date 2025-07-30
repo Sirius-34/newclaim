@@ -1,5 +1,6 @@
 // backend/src/router/claim/index.ts
 
+import { claimEditSchema } from '@newclaim/shared/src/schemas/claim'
 import { z } from 'zod'
 import { createPrismaClient } from '../../lib/prisma'
 import { publicProcedure, router } from '../../trpc'
@@ -33,47 +34,30 @@ export const claimRouter = router({
 
   // =================================================================================
 
-  createClaim: publicProcedure
-    .input(
-      z.object({
-        description: z.string().min(1).max(200),
-        text: z.string().min(1),
-      })
-    )
-    .mutation(async ({ input }) => {
-      const { description, text } = input
+  createClaim: publicProcedure.input(claimEditSchema).mutation(async ({ input }) => {
+    const { description, text, numberField, datetimeField } = input
 
-      return await prisma.claim.create({
-        data: {
-          description,
-          text,
-          authorId: 'fc3f3795-c82c-49aa-a257-ffd902d1e7a0', // временное решение
-        },
-      })
-    }),
+    return await prisma.claim.create({
+      data: {
+        description,
+        text,
+        numberField,
+        datetimeField,
+        authorId: 'fc3f3795-c82c-49aa-a257-ffd902d1e7a0', // временное решение
+      },
+    })
+  }),
 
   // =================================================================================
 
-  updateClaim: publicProcedure
-    .input(
-      z.object({
-        id: z.string().uuid(),
-        description: z.string().min(1).max(200),
-        text: z.string().min(1),
-      })
-    )
-    .mutation(async ({ input }) => {
-      const { id, description, text } = input
+  updateClaim: publicProcedure.input(claimEditSchema.extend({ id: z.string() })).mutation(async ({ input }) => {
+    const { id, ...rest } = input
 
-      return await prisma.claim.update({
-        where: { id },
-        data: {
-          description,
-          text,
-          updatedAt: new Date(), // если Prisma не обновляет updatedAt сам
-        },
-      })
-    }),
+    return await prisma.claim.update({
+      where: { id },
+      data: rest,
+    })
+  }),
 
   // =================================================================================
 })
