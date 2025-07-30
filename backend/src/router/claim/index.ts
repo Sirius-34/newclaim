@@ -28,10 +28,12 @@ export const claimRouter = router({
   }),
 
   createClaim: publicProcedure
-    .input(z.object({
-      description: z.string().min(1).max(200),
-      text: z.string().min(1),
-    }))
+    .input(
+      z.object({
+        description: z.string().min(1).max(200),
+        text: z.string().min(1),
+      })
+    )
     .mutation(async ({ input }) => {
       const { description, text } = input
 
@@ -43,5 +45,4 @@ export const claimRouter = router({
         },
       })
     }),
-
 })

@@ -1,5 +1,6 @@
 // webapp/src/claims/CreateClaim.tsx
 
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getClaimListRoute } from '../lib/routes'
@@ -22,10 +23,24 @@ export function CreateClaim() {
   }
 
   return (
-    <form onSubmit={ handleSubmit }>
+    <form onSubmit={handleSubmit}>
       <h2>Новое дело</h2>
-      <textarea value={description} onChange={e => { setDescription(e.target.value); }} placeholder="Краткое описание" required />
-      <textarea value={text} onChange={e => { setText(e.target.value); }} placeholder="Подробная информация по иску" required />
+      <textarea
+        value={description}
+        onChange={(e) => {
+          setDescription(e.target.value)
+        }}
+        placeholder="Краткое описание"
+        required
+      />
+      <textarea
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value)
+        }}
+        placeholder="Подробная информация по иску"
+        required
+      />
       <button type="submit">Создать</button>
     </form>
   )
