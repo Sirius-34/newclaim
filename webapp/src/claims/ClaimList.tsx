@@ -27,7 +27,7 @@ export const ClaimList = () => {
 
   return (
     <>
-      { useTitle('Список дел') }
+      {useTitle('Список дел')}
       <table>
         <thead>
           <tr>

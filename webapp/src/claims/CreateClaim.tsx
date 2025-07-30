@@ -26,7 +26,7 @@ export function CreateClaim() {
 
   return (
     <>
-      { useTitle('Добавление дела') }
+      {useTitle('Добавление дела')}
       <form onSubmit={handleSubmit}>
         <h2>Новое дело</h2>
         <textarea

@@ -29,6 +29,8 @@ model Claim {
 	serialNumber			Int					@unique @default(autoincrement())
 	description				String                                                                  // Short description
 	text					String              @db.Text                                            // Full description. Maybe later need to increase the length of the field or change the type of field to Memo. 
+	numberField				Int?				// test field
+	datetimeField			DateTime?			// test field
 	createdAt				DateTime			@default(now())
 	documents				String[]                                                                // Optional, links to the claims docs. It is planned to be used later, maybe changed for saving in database as blob
 	authorId				String

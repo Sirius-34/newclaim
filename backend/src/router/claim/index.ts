@@ -7,6 +7,8 @@ import { publicProcedure, router } from '../../trpc'
 const prisma = createPrismaClient()
 
 export const claimRouter = router({
+  // =================================================================================
+
   getAllClaims: publicProcedure.query(async () => {
     return await prisma.claim.findMany({
       include: {
@@ -18,6 +20,8 @@ export const claimRouter = router({
     })
   }),
 
+  // =================================================================================
+
   getClaimById: publicProcedure.input(z.string()).query(async ({ input: id }) => {
     return await prisma.claim.findUnique({
       where: { id },
@@ -26,6 +30,8 @@ export const claimRouter = router({
       },
     })
   }),
+
+  // =================================================================================
 
   createClaim: publicProcedure
     .input(
@@ -45,4 +51,29 @@ export const claimRouter = router({
         },
       })
     }),
+
+  // =================================================================================
+
+  updateClaim: publicProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        description: z.string().min(1).max(200),
+        text: z.string().min(1),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { id, description, text } = input
+
+      return await prisma.claim.update({
+        where: { id },
+        data: {
+          description,
+          text,
+          updatedAt: new Date(), // если Prisma не обновляет updatedAt сам
+        },
+      })
+    }),
+
+  // =================================================================================
 })
