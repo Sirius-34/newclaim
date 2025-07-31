@@ -1,0 +1,80 @@
+.tableWrapper {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.headerCell {
+  background-color: #e0e7ff; // светло-синий
+  font-weight: bold;
+  padding: 8px;
+  border: 1px solid #94a3b8; // slate border
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.cell {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  //  background-color: #ffffff;
+  color: #1f2937; // gray-800
+}
+
+.rowEven {
+  background-color: #f8fafc !important; // lightest
+}
+
+.rowOdd {
+  background-color: #f1f5f9 !important; // slightly darker
+}
+
+.rowEven:hover,
+.rowOdd:hover {
+  background-color: #e2e8f0 !important; // hover
+  cursor: pointer;
+}
+
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pageButton,
+.activePage {
+  padding: 6px 10px;
+  border: 1px solid #94a3b8;
+  background-color: #fff;
+  color: #1e293b;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.activePage {
+  background-color: #e0e7ff;
+  font-weight: bold;
+}
+
+.searchWrapper {
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.searchInput {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  min-width: 200px;
+}

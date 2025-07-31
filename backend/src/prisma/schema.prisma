@@ -32,7 +32,7 @@ model Claim {
 	numberField				Int?				// test field
 	datetimeField			DateTime?			// test field
 	createdAt				DateTime			@default(now())
-	documents				String[]                                                                // Optional, links to the claims docs. It is planned to be used later, maybe changed for saving in database as blob
+	documents				Document[]                                                              // Optional, links to the claims docs, which is saved in database as blob
 	authorId				String
 	author					User				@relation(fields: [authorId], references: [id])		// Link to the 'User' table
     updatedAt               DateTime            @updatedAt
@@ -45,6 +45,16 @@ model sprUserGroup {
 	npp						Int					@unique @default(autoincrement())
 	cUserGroupName			String
 	users					User[]																	// Link to the 'User' table
+}
+
+model Document {
+	id        				String   			@id @default(uuid())
+	claim     				Claim    			@relation(fields: [claimId], references: [id])
+	claimId   				String
+	name      				String           														// оригинальное имя файла
+	mimeType  				String           														// тип контента
+	data      				Bytes            														// сам файл как bytea
+	createdAt 				DateTime 			@default(now())
 }
 
 enum UserPermission {

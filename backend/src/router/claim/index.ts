@@ -1,6 +1,7 @@
 // backend/src/router/claim/index.ts
 
-import { claimEditSchema } from '@newclaim/shared/src/schemas/claim'
+import { claimCreateSchema, claimEditSchema } from '@newclaim/shared/src/schemas/claim'
+import { TRPCError } from '@trpc/server/dist/error/TRPCError'
 import { z } from 'zod'
 import { createPrismaClient } from '../../lib/prisma'
 import { publicProcedure, router } from '../../trpc'
@@ -34,8 +35,8 @@ export const claimRouter = router({
 
   // =================================================================================
 
-  createClaim: publicProcedure.input(claimEditSchema).mutation(async ({ input }) => {
-    const { description, text, numberField, datetimeField } = input
+  createClaim: publicProcedure.input(claimCreateSchema).mutation(async ({ input }) => {
+    const { description, text, numberField, datetimeField, authorId } = input
 
     return await prisma.claim.create({
       data: {
@@ -43,7 +44,7 @@ export const claimRouter = router({
         text,
         numberField,
         datetimeField,
-        authorId: 'fc3f3795-c82c-49aa-a257-ffd902d1e7a0', // временное решение
+        authorId,
       },
     })
   }),
@@ -60,4 +61,35 @@ export const claimRouter = router({
   }),
 
   // =================================================================================
+
+  createDocument: publicProcedure
+    .input(z.object({
+      claimId: z.string().uuid(),
+      name: z.string(),
+      mimeType: z.string(),
+      data: z.instanceof(Buffer), // или z.any(), если ты ещё не парсишь буфер
+    }))
+    .mutation(async ({ input }) => {
+      const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+
+      // Если data — это Buffer (а не string), можно проверить напрямую
+      if (input.data.length > MAX_FILE_SIZE) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Файл превышает допустимый размер (макс. 5 МБ)',
+        })
+      }
+
+      return prisma.document.create({
+        data: {
+          claimId: input.claimId,
+          name: input.name,
+          mimeType: input.mimeType,
+          data: input.data,
+        },
+      })
+    }),
+
+    // =================================================================================
+
 })
