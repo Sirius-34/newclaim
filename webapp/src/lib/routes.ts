@@ -4,9 +4,11 @@ export const getClaimListRoute = pgr(() => '/')
 
 export const getClaimDetailsRoute = pgr({ id: true }, ({ id }) => `/claims/${id}`)
 
-export const getCreateClaimRoute = pgr(() => '/create-claim')
+export const getClaimCreateRoute = pgr(() => '/create-claim')
 
 export const getClaimEditRoute = pgr({ id: true }, ({ id }) => `/claims/${id}/edit`)
+
+// export const getCreateClaimRoute = pgr(() => '/create-claim')
 
 // export const getSignUpRoute = pgr(() => '/sign-up')
 
