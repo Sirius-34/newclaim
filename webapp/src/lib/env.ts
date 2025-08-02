@@ -1,8 +1,4 @@
-import {
-  zEnvHost,
-  zEnvNonemptyTrimmed,
-  zEnvNonemptyTrimmedRequiredOnNotLocal,
-} from '@newclaim/shared/src/zod'
+import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@newclaim/shared/src/zod'
 import { z } from 'zod'
 
 export const zEnv = z.object({

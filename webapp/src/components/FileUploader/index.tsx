@@ -25,7 +25,9 @@ export const FileUploader = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(null)
     const selected = e.target.files?.[0]
-    if (!selected) {return}
+    if (!selected) {
+      return
+    }
 
     if (selected.size > maxSizeMb * 1024 * 1024) {
       setError(`Файл превышает максимальный размер ${maxSizeMb} МБ`)
@@ -37,7 +39,9 @@ export const FileUploader = ({
   }
 
   const handleUpload = async () => {
-    if (!file) {return}
+    if (!file) {
+      return
+    }
     setUploading(true)
 
     try {
@@ -63,30 +67,24 @@ export const FileUploader = ({
 
   return (
     <div style={{ marginTop: '1rem' }}>
-      <input
-        type="file"
-        accept={accept}
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
+      <input type="file" accept={accept} onChange={handleFileChange} disabled={uploading} />
 
       {file && (
         <div style={{ marginTop: '0.5rem' }}>
           <strong>{file.name}</strong>{' '}
-          <button type="button" onClick={ 
-            () => { void handleUpload() }
-            }
-            disabled={uploading}>
+          <button
+            type="button"
+            onClick={() => {
+              void handleUpload()
+            }}
+            disabled={uploading}
+          >
             {uploading ? 'Загрузка...' : 'Загрузить'}
           </button>
         </div>
       )}
 
-      {error && (
-        <div style={{ color: 'red', marginTop: '0.5rem' }}>
-          {error}
-        </div>
-      )}
+      {error && <div style={{ color: 'red', marginTop: '0.5rem' }}>{error}</div>}
     </div>
   )
 }

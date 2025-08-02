@@ -52,6 +52,8 @@ export const ClaimEdit = () => {
         text: values.text,
         numberField: values.numberField,
         datetimeField: values.datetimeField ? new Date(values.datetimeField).toISOString() : undefined,
+        yearAddedID: values.yearAddedID || null,
+        appeal: values.appeal,
       })
 
       void utils.claim.getClaimById.invalidate(id)
@@ -72,6 +74,8 @@ export const ClaimEdit = () => {
           text: claim.text,
           numberField: claim.numberField ?? undefined,
           datetimeField: claim.datetimeField ? new Date(claim.datetimeField).toISOString().slice(0, 16) : '',
+          yearAddedID: claim.yearAddedID ?? '',
+          appeal: claim.appeal ?? false,
         }}
         onSubmit={handleSubmit}
       />

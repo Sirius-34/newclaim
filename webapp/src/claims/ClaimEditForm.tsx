@@ -20,10 +20,12 @@ export const ClaimEditForm = ({
   onSubmit: (values: ClaimFormData) => void | Promise<void>
   claimId?: string
 }) => {
+  const { data: years } = trpc.claim.getAllYears.useQuery()
+
   const utils = trpc.useUtils()
   const handleUploaded = () => {
     void utils.claim.getDocumentsByClaimId.invalidate(claimId)
-}
+  }
   return (
     <Formik
       initialValues={initialValues}
@@ -72,6 +74,25 @@ export const ClaimEditForm = ({
             <Field name="datetimeField" type="datetime-local" className={css.field} />
           </div>
 
+          <div className={css.fieldWrapper}>
+            <label>Год добавления (необязательно)</label>
+            <Field as="select" name="yearAddedID" className={css.field}>
+              <option value="">— Не выбран —</option>
+              {years?.map((year) => (
+                <option key={year.id} value={year.id}>
+                  {year.cYear}
+                </option>
+              ))}
+            </Field>
+          </div>
+
+          <div className={css.fieldWrapper}>
+            <label>
+              <Field type="checkbox" name="appeal" />
+              &nbsp;Обжалование (appeal)
+            </label>
+          </div>
+
           {claimId && (
             <div className={css.fieldWrapper}>
               <label>Документы</label>
@@ -79,7 +100,7 @@ export const ClaimEditForm = ({
               <FileUploader parentId={claimId} onUploaded={handleUploaded} />
             </div>
           )}
-          
+
           <div className={but.backButton}>
             <Button type="submit" loading={isSubmitting}>
               Сохранить
@@ -88,6 +109,5 @@ export const ClaimEditForm = ({
         </Form>
       )}
     </Formik>
-    
   )
 }

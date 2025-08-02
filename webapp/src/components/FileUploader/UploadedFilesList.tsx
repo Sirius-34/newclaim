@@ -5,8 +5,12 @@ import { trpc } from '../../trpc'
 export const UploadedFilesList = ({ claimId }: { claimId: string }) => {
   const { data, isLoading } = trpc.claim.getDocumentsByClaimId.useQuery(claimId)
 
-  if (isLoading) {return <p>Загрузка файлов...</p>}
-  if (!data || data.length === 0) {return <p>Файлы не загружены</p>}
+  if (isLoading) {
+    return <p>Загрузка файлов...</p>
+  }
+  if (!data || data.length === 0) {
+    return <p>Файлы не загружены</p>
+  }
 
   return (
     <ul>

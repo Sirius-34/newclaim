@@ -36,7 +36,7 @@ export const claimRouter = router({
   // =================================================================================
 
   createClaim: publicProcedure.input(claimCreateSchema).mutation(async ({ input }) => {
-    const { description, text, numberField, datetimeField, authorId } = input
+    const { description, text, numberField, datetimeField, authorId, yearAddedID, appeal } = input
 
     return await prisma.claim.create({
       data: {
@@ -45,6 +45,8 @@ export const claimRouter = router({
         numberField,
         datetimeField,
         authorId,
+        yearAddedID: yearAddedID || null,
+        appeal,
       },
     })
   }),
@@ -94,27 +96,34 @@ export const claimRouter = router({
 
   // =================================================================================
 
-    getDocumentsByClaimId: publicProcedure
-      .input(z.string().uuid())
-      .query(async ({ input: claimId, ctx }) => {
-      const documents = await ctx.prisma.document.findMany({
-        where: { claimId },
-        select: {
-          id: true,
-          name: true,
-          mimeType: true,
-          data: true, // обязательно для получения размера
-        },
-      })
+  getDocumentsByClaimId: publicProcedure.input(z.string().uuid()).query(async ({ input: claimId, ctx }) => {
+    const documents = await ctx.prisma.document.findMany({
+      where: { claimId },
+      select: {
+        id: true,
+        name: true,
+        mimeType: true,
+        data: true, // обязательно для получения размера
+      },
+    })
 
-      return documents.map((doc) => ({
-        id: doc.id,
-        name: doc.name,
-        mimeType: doc.mimeType,
-        size: doc.data.length, // размер в байтах
-      }))
-    }),
+    return documents.map((doc) => ({
+      id: doc.id,
+      name: doc.name,
+      mimeType: doc.mimeType,
+      size: doc.data.length, // размер в байтах
+    }))
+  }),
 
   // =================================================================================
 
+  getAllYears: publicProcedure.query(async () => {
+    // eslint-disable-next-line @typescript-eslint/return-await
+    return await prisma.sprYears.findMany({
+      where: { cAct: true },
+      orderBy: { npp: 'asc' },
+    })
+  }),
+
+  // =================================================================================
 })

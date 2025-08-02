@@ -27,17 +27,20 @@ model User {
 model Claim {
 	id						String				@id @default(uuid())
 	serialNumber			Int					@unique @default(autoincrement())
-	description				String                                                                  // Short description
-	text					String              @db.Text                                            // Full description. Maybe later need to increase the length of the field or change the type of field to Memo. 
+	description				String																	// Short description
+	text					String				@db.Text											// Full description. Maybe later need to increase the length of the field or change the type of field to Memo. 
 	numberField				Int?				// test field
 	datetimeField			DateTime?			// test field
 	createdAt				DateTime			@default(now())
-	documents				Document[]                                                              // Optional, links to the claims docs, which is saved in database as blob
+	documents				Document[]																// Optional, links to the claims docs, which is saved in database as blob
+	yearAddedID				String?		
+	yearAdded				sprYears?			@relation("yearAddedRelation", fields: [yearAddedID], references: [id])
+	appeal					Boolean?			@default(false)
 	authorId				String
 	author					User				@relation(fields: [authorId], references: [id])		// Link to the 'User' table
-    updatedAt               DateTime            @updatedAt
+	updatedAt				DateTime			@updatedAt
 	blockedAt				DateTime?
-    @@index([authorId])
+	@@index([authorId])
 }
 
 model sprUserGroup {
@@ -55,6 +58,14 @@ model Document {
 	mimeType  				String           														// тип контента
 	data      				Bytes            														// сам файл как bytea
 	createdAt 				DateTime 			@default(now())
+}
+
+model sprYears {
+	id							        String				  	@id @default(uuid())
+	npp							        Int					    @unique @default(autoincrement())
+	cYear						        String		
+	cAct						        Boolean		      		@default(true)
+	claimsYearAdded						Claim[]		      		@relation("yearAddedRelation")
 }
 
 enum UserPermission {

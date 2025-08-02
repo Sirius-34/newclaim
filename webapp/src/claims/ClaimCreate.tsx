@@ -23,10 +23,10 @@ export const ClaimCreate = () => {
         description: values.description,
         text: values.text,
         numberField: values.numberField,
-        datetimeField: values.datetimeField
-          ? new Date(values.datetimeField).toISOString()
-          : undefined,
+        datetimeField: values.datetimeField ? new Date(values.datetimeField).toISOString() : undefined,
         authorId: env.VITE_AUTHOR_ID_TEMP,
+        yearAddedID: values.yearAddedID || null,
+        appeal: values.appeal,
       } satisfies ClaimCreateData)
 
       setNewClaimId(created.id) // сохраняем ID созданной записи
@@ -49,6 +49,8 @@ export const ClaimCreate = () => {
           text: '',
           numberField: undefined,
           datetimeField: '',
+          yearAddedID: '',
+          appeal: false,
         }}
         onSubmit={handleSubmit}
       />

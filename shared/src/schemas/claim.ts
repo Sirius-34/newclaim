@@ -7,6 +7,8 @@ export const claimBaseSchema = z.object({
   text: z.string().min(1),
   numberField: z.coerce.number().optional(),
   datetimeField: z.string().optional(),
+  yearAddedID: z.string().uuid().optional().nullable(),
+  appeal: z.boolean().optional(),
 })
 
 export const claimEditSchema = claimBaseSchema
