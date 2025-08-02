@@ -1,4 +1,8 @@
-import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@newclaim/shared/src/zod'
+import {
+  zEnvHost,
+  zEnvNonemptyTrimmed,
+  zEnvNonemptyTrimmedRequiredOnNotLocal,
+} from '@newclaim/shared/src/zod'
 import { z } from 'zod'
 
 export const zEnv = z.object({
@@ -11,6 +15,7 @@ export const zEnv = z.object({
   VITE_CLOUDINARY_CLOUD_NAME: zEnvNonemptyTrimmed,
   VITE_S3_URL: zEnvNonemptyTrimmed,
   VITE_MIXPANEL_API_KEY: zEnvNonemptyTrimmedRequiredOnNotLocal,
+  VITE_AUTHOR_ID_TEMP: zEnvNonemptyTrimmed,
 })
 
 const envFromBackend = (window as any).webappEnvFromBackend

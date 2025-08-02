@@ -1,7 +1,10 @@
 // webapp/src/claims/ClaimCreate.tsx
 
 import { type ClaimFormData, type ClaimCreateData } from '@newclaim/shared/src/schemas/claim'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FileUploader } from '../components/FileUploader'
+import { env } from '../lib/env'
 import { getClaimListRoute } from '../lib/routes'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
@@ -12,22 +15,29 @@ export const ClaimCreate = () => {
   const utils = trpc.useUtils()
   const createClaim = trpc.claim.createClaim.useMutation()
 
+  const [newClaimId, setNewClaimId] = useState<string | null>(null)
+
   const handleSubmit = async (values: ClaimFormData) => {
     try {
-    await createClaim.mutateAsync({
+      const created = await createClaim.mutateAsync({
         description: values.description,
         text: values.text,
         numberField: values.numberField,
         datetimeField: values.datetimeField
           ? new Date(values.datetimeField).toISOString()
           : undefined,
-        authorId: '41af9f42-0510-488d-afd6-e2f04ed44219', // временно
+        authorId: env.VITE_AUTHOR_ID_TEMP,
       } satisfies ClaimCreateData)
-      void utils.claim.getAllClaims.invalidate()
-      void navigate(getClaimListRoute())
+
+      setNewClaimId(created.id) // сохраняем ID созданной записи
     } catch (err) {
       alert('Ошибка при создании записи')
     }
+  }
+
+  const handleComplete = () => {
+    void utils.claim.getAllClaims.invalidate()
+    void navigate(getClaimListRoute())
   }
 
   return (
@@ -42,6 +52,13 @@ export const ClaimCreate = () => {
         }}
         onSubmit={handleSubmit}
       />
+
+      {newClaimId && (
+        <div style={{ marginTop: '2rem' }}>
+          <h3>Загрузить документы</h3>
+          <FileUploader parentId={newClaimId} onComplete={handleComplete} />
+        </div>
+      )}
     </>
   )
 }

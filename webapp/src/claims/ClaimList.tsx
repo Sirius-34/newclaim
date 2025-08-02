@@ -33,7 +33,9 @@ export const ClaimList = () => {
         <thead>
           <tr className={css.headerCell}>
             <th className={css.cell}>Автор</th>
-            <th className={css.cell} style={{ width: '15%' }}>Создано</th>
+            <th className={css.cell} style={{ width: '15%' }}>
+              Создано
+            </th>
             <th className={css.cell}>Описание</th>
           </tr>
         </thead>
@@ -41,7 +43,9 @@ export const ClaimList = () => {
           {claims?.map((claim, rowIndex) => (
             <tr
               key={claim.id}
-              onDoubleClick={() => { handleDoubleClick(claim.id) }}
+              onDoubleClick={() => {
+                handleDoubleClick(claim.id)
+              }}
               className={rowIndex % 2 === 0 ? css.rowEven : css.rowOdd}
             >
               <td className={css.cell}>{claim.author?.name ?? '—'}</td>

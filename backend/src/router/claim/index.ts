@@ -1,7 +1,7 @@
 // backend/src/router/claim/index.ts
 
 import { claimCreateSchema, claimEditSchema } from '@newclaim/shared/src/schemas/claim'
-import { TRPCError } from '@trpc/server/dist/error/TRPCError'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { createPrismaClient } from '../../lib/prisma'
 import { publicProcedure, router } from '../../trpc'
@@ -63,12 +63,14 @@ export const claimRouter = router({
   // =================================================================================
 
   createDocument: publicProcedure
-    .input(z.object({
-      claimId: z.string().uuid(),
-      name: z.string(),
-      mimeType: z.string(),
-      data: z.instanceof(Buffer), // или z.any(), если ты ещё не парсишь буфер
-    }))
+    .input(
+      z.object({
+        claimId: z.string().uuid(),
+        name: z.string(),
+        mimeType: z.string(),
+        data: z.instanceof(Uint8Array), // или z.any(), если ты ещё не парсишь буфер
+      })
+    )
     .mutation(async ({ input }) => {
       const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 
@@ -80,7 +82,7 @@ export const claimRouter = router({
         })
       }
 
-      return prisma.document.create({
+      return await prisma.document.create({
         data: {
           claimId: input.claimId,
           name: input.name,
@@ -90,6 +92,29 @@ export const claimRouter = router({
       })
     }),
 
-    // =================================================================================
+  // =================================================================================
+
+    getDocumentsByClaimId: publicProcedure
+      .input(z.string().uuid())
+      .query(async ({ input: claimId, ctx }) => {
+      const documents = await ctx.prisma.document.findMany({
+        where: { claimId },
+        select: {
+          id: true,
+          name: true,
+          mimeType: true,
+          data: true, // обязательно для получения размера
+        },
+      })
+
+      return documents.map((doc) => ({
+        id: doc.id,
+        name: doc.name,
+        mimeType: doc.mimeType,
+        size: doc.data.length, // размер в байтах
+      }))
+    }),
+
+  // =================================================================================
 
 })

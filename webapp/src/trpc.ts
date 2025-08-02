@@ -13,7 +13,6 @@ export const trpcClientOptions = {
   links: [
     httpBatchLink({
       url: env.VITE_BACKEND_TRPC_URL,
-      // url: 'http://localhost:3000/trpc',
       // credentials: 'include' // если планируется работа с cookie
     }),
   ],

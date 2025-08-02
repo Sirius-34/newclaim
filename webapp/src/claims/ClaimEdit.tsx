@@ -66,6 +66,7 @@ export const ClaimEdit = () => {
       {useTitle(`Редактирование #${claim.serialNumber}`)}
       <h2>Редактирование дела</h2>
       <ClaimEditForm
+        claimId={claim.id}
         initialValues={{
           description: claim.description,
           text: claim.text,

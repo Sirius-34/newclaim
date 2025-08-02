@@ -5,16 +5,25 @@ import cn from 'classnames'
 import { Formik, Form, Field } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { Button } from '../components/Button'
+import { FileUploader } from '../components/FileUploader'
+import { UploadedFilesList } from '../components/FileUploader/UploadedFilesList'
+import { trpc } from '../trpc'
 import css from './ClaimEditForm.module.scss'
 import but from './index.module.scss'
 
 export const ClaimEditForm = ({
   initialValues,
   onSubmit,
+  claimId,
 }: {
   initialValues: ClaimFormData
   onSubmit: (values: ClaimFormData) => void | Promise<void>
+  claimId?: string
 }) => {
+  const utils = trpc.useUtils()
+  const handleUploaded = () => {
+    void utils.claim.getDocumentsByClaimId.invalidate(claimId)
+}
   return (
     <Formik
       initialValues={initialValues}
@@ -63,6 +72,14 @@ export const ClaimEditForm = ({
             <Field name="datetimeField" type="datetime-local" className={css.field} />
           </div>
 
+          {claimId && (
+            <div className={css.fieldWrapper}>
+              <label>Документы</label>
+              <UploadedFilesList claimId={claimId} />
+              <FileUploader parentId={claimId} onUploaded={handleUploaded} />
+            </div>
+          )}
+          
           <div className={but.backButton}>
             <Button type="submit" loading={isSubmitting}>
               Сохранить
@@ -71,5 +88,6 @@ export const ClaimEditForm = ({
         </Form>
       )}
     </Formik>
+    
   )
 }
