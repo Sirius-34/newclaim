@@ -3,8 +3,14 @@
 import { claimCreateSchema, claimEditSchema } from '@newclaim/shared/src/schemas/claim'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
+import { ExpectedError } from '../../lib/error'
+import { toClientMe } from '../../lib/models'
 import { createPrismaClient } from '../../lib/prisma'
 import { publicProcedure, router } from '../../trpc'
+import { getPasswordHash } from '../../utils/getPasswordHash'
+import { signJWT } from '../../utils/signJWT'
+import { zSignInInput } from '../auth/signIn/input'
+import { zSignUpInput } from '../auth/signUp/input'
 
 const prisma = createPrismaClient()
 
@@ -123,6 +129,64 @@ export const claimRouter = router({
       where: { cAct: true },
       orderBy: { npp: 'asc' },
     })
+  }),
+
+  // =================================================================================
+
+  signIn: publicProcedure.input(zSignInInput).mutation(async ({ ctx, input }) => {
+    const user = await ctx.prisma.user.findFirst({
+      where: {
+        nick: input.nick,
+        password: getPasswordHash(input.password),
+      },
+    })
+
+    if (!user) {
+      throw new ExpectedError('❌ Wrong nick or password')
+    }
+
+    if (!user.cAct) {
+      throw new ExpectedError('📛 User account is blocked. Please, contact with the Administrator')
+    }
+
+    const token = signJWT(user.id)
+    return { token, userId: user.id }
+  }),
+
+  // =================================================================================
+
+  signUp: publicProcedure.input(zSignUpInput).mutation(async ({ ctx, input }) => {
+    const exUserWithNick = await ctx.prisma.user.findUnique({
+      where: {
+        nick: input.nick,
+      },
+    })
+    if (exUserWithNick) {
+      throw new ExpectedError('⚠️ User with this nick already exists')
+    }
+    const exUserWithEmail = await ctx.prisma.user.findUnique({
+      where: {
+        email: input.email,
+      },
+    })
+    if (exUserWithEmail) {
+      throw new ExpectedError('⚠️ User with this email already exists')
+    }
+    const user = await ctx.prisma.user.create({
+      data: {
+        nick: input.nick,
+        email: input.email,
+        password: getPasswordHash(input.password),
+      },
+    })
+    const token = signJWT(user.id)
+    return { token, userId: user.id }
+  }),
+
+  // =================================================================================
+
+  getMe: publicProcedure.query(({ ctx }) => {
+    return { me: toClientMe(ctx.user) }
   }),
 
   // =================================================================================

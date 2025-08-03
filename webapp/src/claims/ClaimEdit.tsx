@@ -80,7 +80,7 @@ export const ClaimEdit = () => {
         onSubmit={handleSubmit}
       />
       <div className={css.backButton}>
-        <LinkButton color="red" to={from ?? fallback}>
+        <LinkButton color="red" to={fallback}>
           Back to Claim
         </LinkButton>
       </div>

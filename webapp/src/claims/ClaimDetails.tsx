@@ -3,7 +3,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useParams, useLocation } from 'react-router-dom'
+import avatar from '../assets/images/avatar-placeholder.jpg'
 import { LinkButton } from '../components/Button'
+import { UploadedFilesList } from '../components/FileUploader/UploadedFilesList'
+import { Segment } from '../components/Segment'
 import { getClaimListRoute, getClaimEditRoute } from '../lib/routes'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
@@ -43,27 +46,40 @@ export const ClaimDetails = () => {
     state: { from: location.pathname },
   }
 
+  const desc = claim.description ?? '—'
   return (
     <>
       {useTitle(`Карточка #${claim.serialNumber}`)}
-      <div style={{ padding: '1rem' }}>
-        <h2>Детали дела #{claim.id}</h2>
-        <p>
-          <strong>Автор:</strong> {claim.author?.name ?? '—'}
-        </p>
-        <p>
-          <strong>Создано:</strong> {new Date(claim.createdAt).toLocaleString()}
-        </p>
-        <p>
-          <strong>Описание:</strong> {claim.description ?? '—'}
-        </p>
-      </div>
-      <div className={css.editButton}>
-        <LinkButton to={editLink}>Edit Claim</LinkButton>
-      </div>
-      <div className={css.backButton}>
-        <LinkButton to={getClaimListRoute()}>Back to ClaimList</LinkButton>
-      </div>
+
+      <Segment title={`Карточка № ${claim.serialNumber}`} description={`Short description: ${desc}`}>
+        <div className={css.text}>Full text:</div>
+        <br />
+        <div className={css.text} dangerouslySetInnerHTML={{ __html: claim.text }} />
+        <br />
+        <div className={css.createdAt}>Created At: {new Date(claim.createdAt).toLocaleString()}</div>
+
+        <div className={css.author}>
+          <img className={css.avatar} alt="" src={avatar} />
+          <div className={css.name}>
+            Author:
+            <br />
+            {claim.author.nick}
+            {claim.author.name ? ` (${claim.author.name})` : ''}
+          </div>
+        </div>
+
+        <div className={css.documents}>
+          Documents: <UploadedFilesList claimId={id} />
+        </div>
+
+        <div className={css.editButton}>
+          <LinkButton to={editLink}>Edit Claim</LinkButton>
+        </div>
+
+        <div className={css.backButton}>
+          <LinkButton to={getClaimListRoute()}>Back to ClaimList</LinkButton>
+        </div>
+      </Segment>
     </>
   )
 }
