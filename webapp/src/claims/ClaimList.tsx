@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
 import css from './ClaimList.module.scss'
+import { useMe } from '../lib/ctx'
 
 export const ClaimList = () => {
   const { data: claims, isLoading, error } = trpc.claim.getAllClaims.useQuery()
@@ -25,6 +26,8 @@ export const ClaimList = () => {
   if (error) {
     return <div className={css.error}>Ошибка загрузки: {error.message}</div>
   }
+
+  console.log ('me:', useMe())
 
   return (
     <div className={css.wrapper}>

@@ -3,14 +3,15 @@
 import { createRef } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Logo from '../../assets/images/logo.svg?react'
-import { useMe } from '../../lib/ctx'
+// import { useMe } from '../../lib/ctx'
 import * as r from '../../lib/routes'
 import css from './index.module.scss'
+
 
 export const layoutContentElRef = createRef<HTMLDivElement>()
 
 export const Layout = () => {
-  const me = useMe()
+//  const me = useMe()
   return (
     <div className={css.layout}>
       <div className={css.navigation}>
@@ -21,8 +22,6 @@ export const Layout = () => {
               All Claims
             </Link>
           </li>
-          {me ? (
-            <>
               <p>-------------------------</p>
               <li className={css.item}>
                 <Link className={css.link} to={r.getClaimCreateRoute()}>
@@ -31,12 +30,9 @@ export const Layout = () => {
               </li>
               <li className={css.item}>
                 <Link className={css.link} to={r.getSignOutRoute()}>
-                  Log Out ({me.nick})
+                  Log Out
                 </Link>
               </li>
-            </>
-          ) : (
-            <>
               <li className={css.item}>
                 <Link className={css.link} to={r.getSignUpRoute()}>
                   Sign Up
@@ -47,8 +43,6 @@ export const Layout = () => {
                   Sign In
                 </Link>
               </li>
-            </>
-          )}
         </ul>
       </div>
       <div className={css.content} ref={layoutContentElRef}>

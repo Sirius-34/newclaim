@@ -18,9 +18,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <NotAuthRouteTracker />
-      <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
       <Routes>
         <Route element={<Layout />}>
+          <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
           <Route path={routes.getSignInRoute.definition} element={<SignInPage />} />
           <Route path={routes.getSignUpRoute.definition} element={<SignUpPage />} />
           <Route path={routes.getClaimListRoute.definition} element={<ClaimList />} />
