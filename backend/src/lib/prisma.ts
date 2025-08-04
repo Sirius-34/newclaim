@@ -1,3 +1,5 @@
+// backend/src/lib/prisma.ts
+
 import { env } from './env'
 import { PrismaClient } from '@prisma/client'
 import { logger } from './logger'

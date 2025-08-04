@@ -1,3 +1,5 @@
+// webapp/src/components/NotAuthRouteTracker/index.tsx
+
 import { atom } from 'nanostores'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'

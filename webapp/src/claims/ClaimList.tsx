@@ -4,10 +4,10 @@
 
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useMe } from '../lib/ctx'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
 import css from './ClaimList.module.scss'
-import { useMe } from '../lib/ctx'
 
 export const ClaimList = () => {
   const { data: claims, isLoading, error } = trpc.claim.getAllClaims.useQuery()
@@ -27,6 +27,7 @@ export const ClaimList = () => {
     return <div className={css.error}>Ошибка загрузки: {error.message}</div>
   }
 
+  // eslint-disable-next-line no-console
   console.log ('me:', useMe())
 
   return (

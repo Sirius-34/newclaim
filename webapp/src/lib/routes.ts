@@ -1,3 +1,5 @@
+// webapp/src/lib/routes.ts
+
 import { pgr } from './pumpGetRoute'
 
 export const getSignInRoute = pgr(() => '/sign-in')
@@ -16,7 +18,7 @@ export const getClaimEditRoute = pgr({ id: true }, ({ id }) => `/claims/${id}/ed
 
 // export const getEditProfileRoute = pgr(() => '/edit-profile')
 
-// export const getAllUsersRoute = pgr(() => '/users')
+// export const getAllUsersRoute = pgr(() => '/admin/users')
 
 // export const getEditUserRoute = pgr(() => '/admin/users/:userId')
 

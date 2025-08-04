@@ -10,4 +10,4 @@ VITE_CLOUDINARY_CLOUD_NAME=!!!secret!!!
 VITE_S3_URL=!!!secret!!!
 VITE_S3_BUCKET_NAME=!!!secret!!!
 VITE_MIXPANEL_API_KEY=!!!secret!!!
-AUTHOR_ID_TEMP=!!!secret!!!
+VITE_AUTHOR_ID_TEMP=!!!secret!!!

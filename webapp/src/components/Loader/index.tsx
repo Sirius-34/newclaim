@@ -1,3 +1,5 @@
+// webapp/src/components/Loader/index.tsx
+
 import cn from 'classnames'
 import css from './index.module.scss'
 

@@ -1,3 +1,5 @@
+// webapp/src/components/Button/index.tsx
+
 import cn from 'classnames'
 import { Link, type To } from 'react-router-dom'
 import css from './index.module.scss'

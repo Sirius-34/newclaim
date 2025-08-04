@@ -13,7 +13,12 @@ export const trpcClientOptions = {
   links: [
     httpBatchLink({
       url: env.VITE_BACKEND_TRPC_URL,
-      // credentials: 'include' // если планируется работа с cookie
+      async fetch(url, options) {
+        return await fetch(url, {
+          ...options,
+          credentials: 'include',
+        })
+      },
     }),
   ],
 }

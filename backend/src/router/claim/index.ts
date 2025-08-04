@@ -150,6 +150,8 @@ export const claimRouter = router({
     }
 
     const token = signJWT(user.id)
+    console.log ('from TRPC SignIn - token: ', token)
+    console.log ('from TRPC SignIn - userId: ', user.id)
     return { token, userId: user.id }
   }),
 
@@ -186,7 +188,13 @@ export const claimRouter = router({
   // =================================================================================
 
   getMe: publicProcedure.query(({ ctx }) => {
-    return { me: toClientMe(ctx.user) }
+    console.info('ctx.user in getMe:', ctx.user)
+    
+    const me = toClientMe(ctx.user)
+    console.info('Converted me:', me)
+
+    return { me }
+
   }),
 
   // =================================================================================

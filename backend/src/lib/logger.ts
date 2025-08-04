@@ -1,3 +1,5 @@
+// backend/src/lib/logger.ts
+
 import { env } from './env'
 import { EOL } from 'os'
 import { omit } from '@newclaim/shared/src/omit'

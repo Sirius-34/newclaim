@@ -1,3 +1,5 @@
+// backend/src/index.ts
+
 import { env } from './lib/env'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import cors from 'cors'

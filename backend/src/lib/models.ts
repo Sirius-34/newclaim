@@ -1,3 +1,5 @@
+// backend/src/lib/models.ts
+
 import { pick } from '@newclaim/shared/src/pick'
 import { type User } from '@prisma/client'
 

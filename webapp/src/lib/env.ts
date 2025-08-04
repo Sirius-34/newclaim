@@ -1,3 +1,5 @@
+// webapp/src/lib/env.ts
+
 import { zEnvHost, zEnvNonemptyTrimmed, zEnvNonemptyTrimmedRequiredOnNotLocal } from '@newclaim/shared/src/zod'
 import { z } from 'zod'
 

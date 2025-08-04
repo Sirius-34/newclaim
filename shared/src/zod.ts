@@ -1,3 +1,5 @@
+// shared/src/zod.ts
+
 import { z } from 'zod'
 
 export const zEnvNonemptyTrimmed = z.string().trim().min(1)

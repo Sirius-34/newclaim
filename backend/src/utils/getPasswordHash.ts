@@ -1,3 +1,5 @@
+// backend/src/utils/getPasswordHash.ts
+
 import { env } from '../lib/env'
 import crypto from 'crypto'
 

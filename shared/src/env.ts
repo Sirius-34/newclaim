@@ -1,3 +1,5 @@
+// shared/src/env.ts
+
 /* eslint-disable node/no-process-env */
 import { z } from 'zod'
 import { zEnvNonemptyTrimmed } from './zod'

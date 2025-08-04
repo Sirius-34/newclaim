@@ -1,3 +1,5 @@
+// webapp/src/auth/SignUpPage/index.tsx
+
 import { zSignUpInput } from '@newclaim/backend/src/router/auth/signUp/input'
 import { zPasswordsMustBeTheSame, zStringRequired } from '@newclaim/shared/src/zod'
 import Cookies from 'js-cookie'

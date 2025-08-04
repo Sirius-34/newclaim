@@ -1,3 +1,5 @@
+// backend/src/utils/getRandomString.ts
+
 import randomstring from 'randomstring'
 
 export const getRandomString = (length: number) => {
