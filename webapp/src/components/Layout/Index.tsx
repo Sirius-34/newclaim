@@ -7,7 +7,6 @@ import { useMe } from '../../lib/ctx'
 import * as r from '../../lib/routes'
 import css from './index.module.scss'
 
-
 export const layoutContentElRef = createRef<HTMLDivElement>()
 
 export const Layout = () => {
@@ -22,8 +21,9 @@ export const Layout = () => {
               All Claims
             </Link>
           </li>
-              <p>-------------------------</p>
-            {me && <>
+          <p>-------------------------</p>
+          {me && (
+            <>
               <li className={css.item}>
                 <Link className={css.link} to={r.getClaimCreateRoute()}>
                   Add Claim
@@ -34,8 +34,10 @@ export const Layout = () => {
                   Sign Out ({me.name})
                 </Link>
               </li>
-            </>}
-            {!me && <>
+            </>
+          )}
+          {!me && (
+            <>
               <li className={css.item}>
                 <Link className={css.link} to={r.getSignUpRoute()}>
                   Sign Up
@@ -46,7 +48,8 @@ export const Layout = () => {
                   Sign In
                 </Link>
               </li>
-            </>}
+            </>
+          )}
         </ul>
       </div>
       <div className={css.content} ref={layoutContentElRef}>

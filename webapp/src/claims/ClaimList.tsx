@@ -28,7 +28,7 @@ export const ClaimList = () => {
   }
 
   // eslint-disable-next-line no-console
-  console.log ('me:', useMe())
+  console.log('me:', useMe())
 
   return (
     <div className={css.wrapper}>

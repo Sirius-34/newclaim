@@ -44,7 +44,7 @@ export const ClaimEdit = () => {
   const fallback = getClaimDetailsRoute({ id })
 
   const handleSubmit = async (values: ClaimFormData) => {
-//    console.info(values)
+    //    console.info(values)
     try {
       await updateClaim.mutateAsync({
         id,

@@ -1,5 +1,7 @@
 // backend/src/router/claim/index.ts
 
+/* eslint-disable no-console */
+
 import { claimCreateSchema, claimEditSchema } from '@newclaim/shared/src/schemas/claim'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
@@ -76,13 +78,12 @@ export const claimRouter = router({
         claimId: z.string().uuid(),
         name: z.string(),
         mimeType: z.string(),
-        data: z.instanceof(Uint8Array), // или z.any(), если ты ещё не парсишь буфер
+        data: z.instanceof(Uint8Array),
       })
     )
     .mutation(async ({ input }) => {
       const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 
-      // Если data — это Buffer (а не string), можно проверить напрямую
       if (input.data.length > MAX_FILE_SIZE) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
@@ -150,8 +151,8 @@ export const claimRouter = router({
     }
 
     const token = signJWT(user.id)
-    console.log ('from TRPC SignIn - token: ', token)
-    console.log ('from TRPC SignIn - userId: ', user.id)
+    console.log('from TRPC SignIn - token: ', token)
+    console.log('from TRPC SignIn - userId: ', user.id)
     return { token, userId: user.id }
   }),
 
@@ -189,12 +190,11 @@ export const claimRouter = router({
 
   getMe: publicProcedure.query(({ ctx }) => {
     console.info('ctx.user in getMe:', ctx.user)
-    
+
     const me = toClientMe(ctx.user)
     console.info('Converted me:', me)
 
     return { me }
-
   }),
 
   // =================================================================================
