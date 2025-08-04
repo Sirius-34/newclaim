@@ -13,6 +13,7 @@ import { NotAuthRouteTracker } from './components/NotAuthRouteTracker'
 import { RequireAuth } from './components/RequireAuth'
 import { AppContextProvider } from './lib/ctx'
 import * as routes from './lib/routes'
+import { AccessDeniedPage } from './pages/AccessDeniedPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import './styles/global.scss'
 
@@ -27,9 +28,31 @@ export default function App() {
             <Route path={routes.getSignInRoute.definition} element={<SignInPage />} />
             <Route path={routes.getSignOutRoute.definition} element={<SignOutPage />} />
             <Route path={routes.getClaimListRoute.definition} element={<ClaimList />} />
-            <Route path={routes.getClaimDetailsRoute.definition} element={<RequireAuth><ClaimDetails /></RequireAuth>} />
-            <Route path={routes.getClaimEditRoute.definition} element={<RequireAuth><ClaimEdit /></RequireAuth>} />
-            <Route path={routes.getClaimCreateRoute.definition} element={<RequireAuth><ClaimCreate /></RequireAuth>} />
+            <Route
+              path={routes.getClaimDetailsRoute.definition}
+              element={
+                <RequireAuth>
+                  <ClaimDetails />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path={routes.getClaimEditRoute.definition}
+              element={
+                <RequireAuth>
+                  <ClaimEdit />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path={routes.getClaimCreateRoute.definition}
+              element={
+                <RequireAuth>
+                  <ClaimCreate />
+                </RequireAuth>
+              }
+            />
+            <Route path="/access-denied" element={<AccessDeniedPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

@@ -3,8 +3,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { type ClaimFormData } from '@newclaim/shared/src/schemas/claim'
+import { useEffect } from 'react'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { LinkButton } from '../components/Button'
+import { useMe } from '../lib/ctx'
 import { getClaimDetailsRoute, getClaimListRoute } from '../lib/routes'
 import { useTitle } from '../lib/useTitle'
 import { trpc } from '../trpc'
@@ -16,6 +18,7 @@ export const ClaimEdit = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const from = (location.state as { from?: string })?.from ?? getClaimListRoute()
+  const me = useMe()
 
   const utils = trpc.useUtils()
   const updateClaim = trpc.claim.updateClaim.useMutation()
@@ -40,6 +43,12 @@ export const ClaimEdit = () => {
   if (!claim) {
     return <div>Запись не найдена</div>
   }
+
+  useEffect(() => {
+    if (me && claim && me.id !== claim.authorId && me.userGroupName !== 'Administrators') {
+      void navigate('/access-denied', { replace: true })
+    }
+  }, [me, claim, navigate])
 
   const fallback = getClaimDetailsRoute({ id })
 
