@@ -1,12 +1,12 @@
 // webapp/src/pages/NotFoundPage/index.tsx
- 
+
 import image404 from '../../assets/images/404.jpg'
 import { ErrorPageComponent } from '../../components/ErrorPageComponent'
 import css from './index.module.css'
 
 export const NotFoundPage = ({
   title = 'Not Found',
-  message = 'This page does not exist',
+  message = 'This page does not exist. Запрашиваемая страница не существует.',
 }: {
   title?: string
   message?: string

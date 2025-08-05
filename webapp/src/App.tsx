@@ -32,9 +32,9 @@ export default function App() {
             <Route
               path={routes.getClaimDetailsRoute.definition}
               element={
-//                 <RequireAuth>
-                  <ClaimDetails />
-//                </RequireAuth>
+                //                 <RequireAuth>
+                <ClaimDetails />
+                //                </RequireAuth>
               }
             />
             <Route
@@ -55,6 +55,7 @@ export default function App() {
             />
             <Route path="/access-denied" element={<AccessDeniedPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="/not-found" element={<NotFoundPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

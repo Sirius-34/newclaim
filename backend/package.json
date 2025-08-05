@@ -4,9 +4,6 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev --watch ./.env --rs --exit-child ./src/index.ts",
-    "build-emails": "rimraf ./src/emails/dist && mkdir ./src/emails/dist && mjml ./src/emails/[!_]*.mjml -o ./src/emails/dist",
-    "watch-emails": "mjml -w ./src/emails/[!_]*.mjml -o ./src/emails/dist",
-    "copy-emails": "copyfiles ./src/emails/dist/*.html ./dist/backend",
     "build-ts": "rimraf ./dist && tsc --build ./tsconfig.build.json",
     "build": "pnpm build-ts",
     "genums": "tsx ./src/scripts/generate-enums.ts",
@@ -49,7 +46,6 @@
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
-    "mjml": "^4.15.3",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "picocolors": "^1.1.1",
