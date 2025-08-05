@@ -189,25 +189,25 @@ export const claimRouter = router({
   // =================================================================================
 
   getMe: publicProcedure.query(async ({ ctx }) => {
-    console.info('ctx.user in getMe:', ctx.user)
+    //     console.info('ctx.user in getMe:', ctx.user)
 
     if (!ctx.user) {
       return { me: null }
     }
 
     const user = await ctx.prisma.user.findUnique({
-        where: { id: ctx.user.id },
-        include: {
-          userGroup: {
-            select: {              
-              cUserGroupName: true,
-            },
+      where: { id: ctx.user.id },
+      include: {
+        userGroup: {
+          select: {
+            cUserGroupName: true,
           },
         },
-      })
+      },
+    })
 
     const me = toClientMe(user)
-        console.info('Converted me:', me)
+    //    console.info('Converted me:', me)
 
     return { me }
   }),

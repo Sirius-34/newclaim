@@ -45,7 +45,14 @@ export const ClaimEdit = () => {
   }
 
   useEffect(() => {
-    if (me && claim && me.id !== claim.authorId && me.userGroupName !== 'Administrators') {
+    // 1. Неавторизованный пользователь
+    if (me === null) {
+      void navigate('/unauthorized', { replace: true })
+      return
+    }
+
+    // 2. Пользователь авторизован, но не имеет прав
+    if (claim && me.id !== claim.authorId && me.userGroupName !== 'Administrators') {
       void navigate('/access-denied', { replace: true })
     }
   }, [me, claim, navigate])

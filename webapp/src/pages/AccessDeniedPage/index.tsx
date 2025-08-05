@@ -1,3 +1,5 @@
+// webapp/src/pages/AccessDeniedPage/index.tsx
+ 
 import { Link } from 'react-router-dom'
 import image403 from '../../assets/images/403.jpg'
 import { ErrorPageComponent } from '../../components/ErrorPageComponent'
@@ -12,7 +14,7 @@ export const AccessDeniedPage = ({
 }) => (
   <ErrorPageComponent title={title} message={message}>
     <Link to="/">
-      <img src={image403} className={css.image} alt="" width="800" height="600" />
+      <img src={image403} className={css.image} alt="" width="409" height="614" />
     </Link>
   </ErrorPageComponent>
 )

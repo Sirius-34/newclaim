@@ -16,6 +16,7 @@ import * as routes from './lib/routes'
 import { AccessDeniedPage } from './pages/AccessDeniedPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import './styles/global.scss'
+import { UnauthorizedPage } from './pages/UnauthorizedPage'
 
 export default function App() {
   return (
@@ -31,9 +32,9 @@ export default function App() {
             <Route
               path={routes.getClaimDetailsRoute.definition}
               element={
-                <RequireAuth>
+//                 <RequireAuth>
                   <ClaimDetails />
-                </RequireAuth>
+//                </RequireAuth>
               }
             />
             <Route
@@ -53,6 +54,7 @@ export default function App() {
               }
             />
             <Route path="/access-denied" element={<AccessDeniedPage />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
