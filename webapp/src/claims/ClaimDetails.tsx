@@ -50,7 +50,8 @@ export const ClaimDetails = () => {
   }
 
   // =========== for wrapper
-  const accessAllowed = !!me && !!claim && (me.id === claim.authorId || me.userGroupName === 'Administrators')
+  const accessAllowed =
+    !!me && !!claim && (me.id === claim.authorId || me.userGroup.cUserGroupName === 'Administrators')
   const titlePage = `Карточка #${claim.serialNumber}`
   // =========== for wrapper
 

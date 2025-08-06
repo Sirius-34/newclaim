@@ -1,3 +1,5 @@
+// backend/src/router/auth/updateProfile/index.ts
+
 import { ExpectedError } from '../../../lib/error'
 import { toClientMe } from '../../../lib/models'
 import { publicProcedure } from '../../../trpc'
@@ -17,12 +19,22 @@ export const updateProfileRoute = publicProcedure.input(zUpdateProfileInput).mut
       throw new ExpectedError('⚠️ User with this nick already exists')
     }
   }
+
   const updatedMe = await ctx.prisma.user.update({
     where: {
       id: ctx.user.id,
     },
     data: input,
+    include: {
+      userGroup: {
+        select: {
+          cUserGroupName: true,
+        },
+      },
+    },
   })
+
   ctx.user = updatedMe
+
   return toClientMe(updatedMe)
 })

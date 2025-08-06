@@ -177,7 +177,9 @@ export const claimRouter = router({
     }
 
     const defaultGroup = await prisma.sprUserGroup.findFirst({ where: { cUserGroupName: '-' } })
-    if (defaultGroup === null) throw new ExpectedError('⚠️ Error in guide Users: null userGroupID')
+    if (defaultGroup === null) {
+      throw new ExpectedError('⚠️ Error in guide Users: null userGroupID')
+    }
 
     const user = await ctx.prisma.user.create({
       data: {

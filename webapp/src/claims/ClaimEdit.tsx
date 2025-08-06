@@ -42,7 +42,8 @@ export const ClaimEdit = () => {
   }
 
   // =========== for wrapper
-  const accessAllowed = !!me && !!claim && (me.id === claim.authorId || me.userGroupName === 'Administrators')
+  const accessAllowed =
+    !!me && !!claim && (me.id === claim.authorId || me.userGroup.cUserGroupName === 'Administrators')
   const titlePage = `Редактирование #${claim.serialNumber}`
   // =========== for wrapper
 

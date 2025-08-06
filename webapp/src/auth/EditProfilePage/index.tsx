@@ -27,13 +27,16 @@ export const EditProfilePage = () => {
       throw new Error('⚠️ Unexpected null me on EditProfilePage')
     }
 
-    const initialValues = useMemo(() => ({
-      nick: me.nick,
-      name: me.name,
-      avatar: me.avatar,
-      userGroupID: me.userGroupID,
-      cAct: me.cAct,
-    }), [me.nick, me.name, me.avatar, me.userGroupID, me.cAct])
+    const initialValues = useMemo(
+      () => ({
+        nick: me.nick,
+        name: me.name,
+        avatar: me.avatar,
+        userGroupID: me.userGroupID,
+        cAct: me.cAct,
+      }),
+      [me.nick, me.name, me.avatar, me.userGroupID, me.cAct]
+    )
 
     const { formik, alertProps, buttonProps } = useForm({
       initialValues,

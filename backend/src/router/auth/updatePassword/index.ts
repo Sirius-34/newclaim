@@ -1,3 +1,5 @@
+// backend/src/router/auth/updatePassword/index.ts
+
 import { ExpectedError } from '../../../lib/error'
 import { publicProcedure } from '../../../trpc'
 import { getPasswordHash } from '../../../utils/getPasswordHash'

@@ -18,6 +18,6 @@ export const toClientMe = (
 
   return {
     ...base,
-    userGroupName: user.userGroup.cUserGroupName,
+    userGroup: user.userGroup,
   }
 }
