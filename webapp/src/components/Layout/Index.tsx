@@ -25,6 +25,11 @@ export const Layout = () => {
           {me && (
             <>
               <li className={css.item}>
+                <Link className={css.link} to={r.getEditProfileRoute()}>
+                  Edit My Profile
+                </Link>
+              </li>
+              <li className={css.item}>
                 <Link className={css.link} to={r.getClaimCreateRoute()}>
                   Add Claim
                 </Link>

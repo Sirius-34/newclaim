@@ -1,6 +1,7 @@
 // webapp/src/App.tsx
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { EditProfilePage } from './auth/EditProfilePage'
 import { SignInPage } from './auth/SignInPage'
 import { SignOutPage } from './auth/SignOutPage'
 import { SignUpPage } from './auth/SignUpPage'
@@ -50,6 +51,14 @@ export default function App() {
               element={
                 <RequireAuth>
                   <ClaimCreate />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path={routes.getEditProfileRoute.definition}
+              element={
+                <RequireAuth>
+                  <EditProfilePage />
                 </RequireAuth>
               }
             />

@@ -1,7 +1,7 @@
-import { zNickRequired } from '@claimbase/shared/src/zod'
+import { zNickRequired } from '@newclaim/shared/src/zod'
 import { z } from 'zod'
 
-export const zUpdateProfileTrpcInput = z.object({
+export const zUpdateProfileInput = z.object({
   nick: zNickRequired,
   name: z.string().max(50).default(''),
   avatar: z.string().nullable(),

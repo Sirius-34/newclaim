@@ -1,4 +1,4 @@
-// webapp/src/components/Alert/FormItems.tsx
+// webapp/src/components/FormItems/index.tsx
 
 import css from './index.module.scss'
 

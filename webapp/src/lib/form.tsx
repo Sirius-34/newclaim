@@ -34,6 +34,8 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
       }
       try {
         setSubmittingError(null)
+        setSuccessMessageVisible(false)
+
         await onSubmit(values, formikHelpers)
         if (resetOnSuccess) {
           formik.resetForm()
@@ -85,6 +87,7 @@ export const useForm = <TZodSchema extends z.ZodTypeAny>({
 
   return {
     formik,
+    successMessageVisible,
     alertProps,
     buttonProps,
   }

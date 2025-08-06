@@ -19,8 +19,8 @@ model User {
 	createdAt				DateTime			@default(now())
 	claim					Claim[]																	// Link to the 'Claim' (maintable)
 	permissions				UserPermission[]														// User permissions (roles) from ENUM. Default (on start of dev-period) all users need to be assigned 'ALL' permission
-	userGroupID				String?																	// Link to the 'sprUserGroup' table. Temporarily only for info. It is planned to be used later to determine user rights
-	userGroup				sprUserGroup?		@relation(fields: [userGroupID], references: [id])
+	userGroupID				String																	// Link to the 'sprUserGroup' table. Temporarily only for info. It is planned to be used later to determine user rights
+	userGroup				sprUserGroup		@relation(fields: [userGroupID], references: [id])
 	cAct					Boolean				@default(true)										// mark account as Active / non-Active 
 }
 

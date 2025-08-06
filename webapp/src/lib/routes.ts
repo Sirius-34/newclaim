@@ -16,7 +16,7 @@ export const getClaimCreateRoute = pgr(() => '/create-claim')
 
 export const getClaimEditRoute = pgr({ id: true }, ({ id }) => `/claims/${id}/edit`)
 
-// export const getEditProfileRoute = pgr(() => '/edit-profile')
+export const getEditProfileRoute = pgr(() => '/edit-profile')
 
 // export const getAllUsersRoute = pgr(() => '/admin/users')
 
