@@ -175,11 +175,16 @@ export const claimRouter = router({
     if (exUserWithEmail) {
       throw new ExpectedError('⚠️ User with this email already exists')
     }
+
+    const defaultGroup = await prisma.sprUserGroup.findFirst({ where: { cUserGroupName: '-' } })
+    if (defaultGroup === null) throw new ExpectedError('⚠️ Error in guide Users: null userGroupID')
+
     const user = await ctx.prisma.user.create({
       data: {
         nick: input.nick,
         email: input.email,
         password: getPasswordHash(input.password),
+        userGroupID: defaultGroup.id,
       },
     })
     const token = signJWT(user.id)

@@ -24,14 +24,14 @@ export const EditProfilePage = () => {
     const updateProfile = trpc.authUpdateProfile.useMutation()
 
     if (!me || me === null) {
-      throw new Error('Unexpected null me on EditProfilePage')
+      throw new Error('⚠️ Unexpected null me on EditProfilePage')
     }
 
     const initialValues = useMemo(() => ({
       nick: me.nick,
       name: me.name,
       avatar: me.avatar,
-      userGroupID: me.userGroupID || '',
+      userGroupID: me.userGroupID,
       cAct: me.cAct,
     }), [me.nick, me.name, me.avatar, me.userGroupID, me.cAct])
 

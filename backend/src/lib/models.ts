@@ -6,7 +6,7 @@ import { type User } from '@prisma/client'
 export const toClientMe = (
   user:
     | (User & {
-        userGroup?: { cUserGroupName: string } | null
+        userGroup: { cUserGroupName: string }
       })
     | null
 ) => {
@@ -18,6 +18,6 @@ export const toClientMe = (
 
   return {
     ...base,
-    userGroupName: user.userGroup?.cUserGroupName ?? null,
+    userGroupName: user.userGroup.cUserGroupName,
   }
 }
