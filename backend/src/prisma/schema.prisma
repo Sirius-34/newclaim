@@ -27,6 +27,8 @@ model User {
 model Claim {
 	id						String				@id @default(uuid())
 	serialNumber			Int					@unique @default(autoincrement())
+	numCourtCase			String?				
+	regNumIntDoc			String?				
 	description				String																	// Short description
 	text					String				@db.Text											// Full description. Maybe later need to increase the length of the field or change the type of field to Memo. 
 	numberField				Int?				// test field
